@@ -1,0 +1,39 @@
+{
+"clodsire": {
+    "type_1": "poison",
+    "type_2": "ground",
+    "fast_move": "poison_sting",
+    "charged_move_1": "sludge_bomb",
+    "charged_move_2": "earthquake",
+    "level": 30.5,
+    "ivs": {
+        "attack": 0,
+        "defense": 14,
+        "hp": 13
+    },
+    "base_stats": {
+        "attack": 127,
+        "defense": 151,
+        "hp": 277
+    }
+},
+
+"furret": {
+    "type_1": "normal",
+    "type_2": "none",
+    "fast_move": "sucker_punch",
+    "charged_move_1": "swift",
+    "charged_move_2": "trailblaze",
+    "level": 35.5,
+    "ivs": {
+        "attack": 1,
+        "defense": 15,
+        "hp": 14
+    },
+    "base_stats": {
+        "attack": 148,
+        "defense": 125,
+        "hp": 198
+    }
+}
+}
