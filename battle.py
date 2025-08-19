@@ -5,6 +5,12 @@ import json
 with open('pokemon.json', 'r') as f:
     POKEMON_DATA = json.load(f)
 
+with open('moves.json', 'r') as f:
+    MOVE_DATA = json.load(f)
+
+
+
+
 CP_MULTIPLIERS = {
     1: 0.094, 1.5: 0.135137432, 2: 0.16639787, 2.5: 0.192650919, 3: 0.21573247,
     3.5: 0.236572661, 4: 0.25572005, 4.5: 0.273530381, 5: 0.29024988,
@@ -48,23 +54,20 @@ STAT_MULTIPLIERS = {-4: 0.5,
 
 
 class Move:
-    def __init__(self, name, move_type, damage, energy_cost, energy_gain, turns):
+    def __init__(self, name, data):
         self.name = name
-        self.type = move_type
-        self.damage = damage
-        self.energy_cost = energy_cost
-        self.energy_gain = energy_gain
-        self.turns = turns
+        self.data = data
+        self.type = data["type"]
+        self.damage = data["damage"]
+        self.energy_cost = data["energy_cost"]
+        self.energy_gain = data["energy_gain"]
+        self.turns = data["turns"]
+        self.user_attack_buff = data["user_attack_buff"]
+        self.opponent_attack_buff = data["opponent_attack_buff"]
+        self.user_defense_buff = data["user_defense_buff"]
+        self.opponent_defense_buff = data["opponent_defense_buff"]
+        self.buff_probability = data["buff_probability"]
 
-
-MOVES = {
-    "sucker_punch": Move("Sucker Punch", "Dark", 8, 0, 7, 2),
-    "swift": Move("Swift", "Normal", 55, 35, 0, 0),
-    "trailblaze": Move("Trailblaze", "Grass", 65, 45, 0, 0),
-    "poison_sting": Move("Poison Sting", "Poison", 4, 0, 9, 2),
-    "sludge_bomb": Move("Sludge Bomb", "Poison", 80, 50, 0, 0),
-    "earthquake": Move("Earthquake", "Ground", 110, 65, 0, 0)
-}
 
 
 class Pokemon:
@@ -129,6 +132,7 @@ class Battle:
 
 
     def damage_dealt(self, attacker, defender, move):
+        # TODO: implement type effectiveness
         stab = 1.2 if move.type in {attacker.type_1, attacker.type_2} else 1.0
         bonus = 1.3
         return math.floor(0.5 * move.damage * ((attacker.attack * STAT_MULTIPLIERS[attacker.attack_status]) / (defender.defense * STAT_MULTIPLIERS[defender.defense_status])) * stab * bonus) + 1
@@ -339,10 +343,14 @@ class Battle:
 
 
 if __name__ == '__main__':
-    attacker = Pokemon("furret", POKEMON_DATA["furret"])
-    defender = Pokemon("clodsire", POKEMON_DATA["clodsire"])
-    attacker_shields = 2
-    defender_shields = 0
+    POKEMON = {i: Pokemon(i, POKEMON_DATA[i]) for i in POKEMON_DATA}
+    MOVES = {i: Move(i, MOVE_DATA[i]) for i in MOVE_DATA}
+
+    attacker = POKEMON['clodsire']
+    defender = POKEMON['furret']
+
+    attacker_shields = 0
+    defender_shields = 2
 
     battle = Battle(attacker, defender, attacker_shields, defender_shields)
     battle.simulate()
