@@ -1,39 +1,742 @@
 {
-"clodsire": {
-    "type_1": "poison",
-    "type_2": "ground",
-    "fast_move": "poison_sting",
-    "charged_move_1": "sludge_bomb",
-    "charged_move_2": "earthquake",
-    "level": 30.5,
-    "ivs": {
-        "attack": 0,
-        "defense": 14,
-        "hp": 13
+    "annihilape": {
+        "type_1": "fighting",
+        "type_2": "ghost",
+        "fast_move": "counter",
+        "charged_move_1": "rage_fist",
+        "charged_move_2": "ice_punch",
+        "level": 17.0,
+        "ivs": {
+            "attack": 2,
+            "defense": 15,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 220,
+            "defense": 178,
+            "hp": 242
+        }
     },
-    "base_stats": {
-        "attack": 127,
-        "defense": 151,
-        "hp": 277
-    }
-},
 
-"furret": {
-    "type_1": "normal",
-    "type_2": "none",
-    "fast_move": "sucker_punch",
-    "charged_move_1": "swift",
-    "charged_move_2": "trailblaze",
-    "level": 35.5,
-    "ivs": {
-        "attack": 1,
-        "defense": 15,
-        "hp": 14
+    "araquanid": {
+        "type_1": "bug",
+        "type_2": "water",
+        "fast_move": "bug_bite",
+        "charged_move_1": "bubble_beam",
+        "charged_move_2": "water_pulse",
+        "level": 35.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 10,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 126,
+            "defense": 219,
+            "hp": 169
+        }
     },
-    "base_stats": {
-        "attack": 148,
-        "defense": 125,
-        "hp": 198
+
+    "azumarill": {
+        "type_1": "water",
+        "type_2": "fairy",
+        "fast_move": "bubble",
+        "charged_move_1": "ice_beam",
+        "charged_move_2": "play_rough",
+        "level": 45.5,
+        "ivs": {
+            "attack": 0,
+            "defense": 15,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 112,
+            "defense": 152,
+            "hp": 225
+        }
+    },
+
+    "blastoise": {
+        "type_1": "water",
+        "type_2": "none",
+        "fast_move": "rollout",
+        "charged_move_1": "hydro_cannon",
+        "charged_move_2": "skull_bash",
+        "level": 23,
+        "ivs": {
+            "attack": 1,
+            "defense": 15,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 171,
+            "defense": 207,
+            "hp": 188
+        }
+    },
+        
+    "clodsire": {
+        "type_1": "poison",
+        "type_2": "ground",
+        "fast_move": "poison_sting",
+        "charged_move_1": "sludge_bomb",
+        "charged_move_2": "earthquake",
+        "level": 30.5,
+        "ivs": {
+            "attack": 0,
+            "defense": 14,
+            "hp": 13
+        },
+        "base_stats": {
+            "attack": 127,
+            "defense": 151,
+            "hp": 277
+        }
+    },
+
+    "corsola_galarian": {
+        "type_1": "ghost",
+        "type_2": "none",
+        "fast_move": "astonish",
+        "charged_move_1": "night_shade",
+        "charged_move_2": "power_gem",
+        "level": 47.5,
+        "ivs": {
+            "attack": 4,
+            "defense": 15,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 116,
+            "defense": 182,
+            "hp": 155
+        }
+    },
+
+    "cradily": {
+        "type_1": "grass",
+        "type_2": "rock",
+        "fast_move": "acid",
+        "charged_move_1": "rock_tomb",
+        "charged_move_2": "grass_knot",
+        "level": 26.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 15,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 152,
+            "defense": 194,
+            "hp": 200
+        }
+    },
+
+    "dedenne": {
+        "type_1": "electric",
+        "type_2": "fairy",
+        "fast_move": "thunder_shock",
+        "charged_move_1": "parabolic_charge",
+        "charged_move_2": "play_rough",
+        "level": 33.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 14,
+            "hp": 12
+        },
+        "base_stats": {
+            "attack": 164,
+            "defense": 134,
+            "hp": 167
+        }
+    },
+
+    "dewgong": {
+        "type_1": "ice",
+        "type_2": "water",
+        "fast_move": "ice_shard",
+        "charged_move_1": "icy_wind",
+        "charged_move_2": "drill_run",
+        "level": 29.5,
+        "ivs": {
+            "attack": 0,
+            "defense": 12,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 139,
+            "defense": 177,
+            "hp": 207
+        }
+    },
+
+    "diggersby": {
+        "type_1": "normal",
+        "type_2": "ground",
+        "fast_move": "quick_attack",
+        "charged_move_1": "fire_punch",
+        "charged_move_2": "scorching_sands",
+        "level": 50.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 15,
+            "hp": 13
+        },
+        "base_stats": {
+            "attack": 112,
+            "defense": 155,
+            "hp": 198
+        }
+    },
+
+    "drapion": {
+        "type_1": "dark",
+        "type_2": "poison",
+        "fast_move": "poison_sting",
+        "charged_move_1": "crunch",
+        "charged_move_2": "aqua_tail",
+        "level": 23.0,
+        "ivs": {
+            "attack": 2,
+            "defense": 15,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 180,
+            "defense": 202,
+            "hp": 172
+        }
+    },
+
+    "dunsparce": {
+        "type_1": "normal",
+        "type_2": "none",
+        "fast_move": "rollout",
+        "charged_move_1": "drill_run",
+        "charged_move_2": "rock_slide",
+        "level": 40.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 14,
+            "hp": 12
+        },
+        "base_stats": {
+            "attack": 131,
+            "defense": 128,
+            "hp": 225
+        }
+    },
+
+    "dusclops": {
+        "type_1": "ghost",
+        "type_2": "none",
+        "fast_move": "hex",
+        "charged_move_1": "shadow_punch",
+        "charged_move_2": "ice_punch",
+        "level": 45.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 11,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 124,
+            "defense": 234,
+            "hp": 120
+        }
+    },
+
+    "feraligatr": {
+        "type_1": "water",
+        "type_2": "none",
+        "fast_move": "shadow_claw",
+        "charged_move_1": "hydro_cannon",
+        "charged_move_2": "ice_beam",
+        "level": 20.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 11,
+            "hp": 13
+        },
+        "base_stats": {
+            "attack": 205,
+            "defense": 188,
+            "hp": 198
+        }
+    },
+
+    "forretress": {
+        "type_1": "bug",
+        "type_2": "steel",
+        "fast_move": "bug_bite",
+        "charged_move_1": "sand_tomb",
+        "charged_move_2": "rock_tomb",
+        "level": 25.5,
+        "ivs": {
+            "attack": 0,
+            "defense": 9,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 161,
+            "defense": 205,
+            "hp": 181
+        }
+    },
+
+    "furret": {
+        "type_1": "normal",
+        "type_2": "none",
+        "fast_move": "sucker_punch",
+        "charged_move_1": "swift",
+        "charged_move_2": "trailblaze",
+        "level": 35.5,
+        "ivs": {
+            "attack": 1,
+            "defense": 15,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 148,
+            "defense": 125,
+            "hp": 198
+        }
+    },
+
+    "gastrodon": {
+        "type_1": "water",
+        "type_2": "ground",
+        "fast_move": "mud_slap",
+        "charged_move_1": "body_slam",
+        "charged_move_2": "earth_power",
+        "level": 24.5,
+        "ivs": {
+            "attack": 1,
+            "defense": 15,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 169,
+            "defense": 143,
+            "hp": 244
+        }
+    },
+
+    "giratina_altered": {
+        "type_1": "ghost",
+        "type_2": "dragon",
+        "fast_move": "shadow_claw",
+        "charged_move_1": "dragon_claw",
+        "charged_move_2": "ancient_power",
+        "level": 16.5,
+        "ivs": {
+            "attack": 6,
+            "defense": 11,
+            "hp": 11
+        },
+        "base_stats": {
+            "attack": 187,
+            "defense": 225,
+            "hp": 284
+        }
+    },
+
+    "gligar": {
+        "type_1": "ground",
+        "type_2": "flying",
+        "fast_move": "fury_cutter",
+        "charged_move_1": "aerial_ace",
+        "charged_move_2": "dig",
+        "level": 33.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 15,
+            "hp": 12
+        },
+        "base_stats": {
+            "attack": 143,
+            "defense": 184,
+            "hp": 163
+        }
+    },
+
+    "golisopod": {
+        "type_1": "bug",
+        "type_2": "water",
+        "fast_move": "fury_cutter",
+        "charged_move_1": "x-scissor",
+        "charged_move_2": "aqua_jet",
+        "level": 18.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 8,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 218,
+            "defense": 226,
+            "hp": 181
+        }
+    },
+
+    "greninja": {
+        "type_1": "water",
+        "type_2": "dark",
+        "fast_move": "water_shuriken",
+        "charged_move_1": "night_slash",
+        "charged_move_2": "hydro_cannon",
+        "level": 21.0,
+        "ivs": {
+            "attack": 3,
+            "defense": 15,
+            "hp": 12
+        },
+        "base_stats": {
+            "attack": 223,
+            "defense": 152,
+            "hp": 176
+        }
+    },
+
+    "jellicent": {
+        "type_1": "water",
+        "type_2": "ghost",
+        "fast_move": "hex",
+        "charged_move_1": "surf",
+        "charged_move_2": "shadow_ball",
+        "level": 24.5,
+        "ivs": {
+            "attack": 1,
+            "defense": 14,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 159,
+            "defense": 178,
+            "hp": 225
+        }
+    },
+
+    "jumpluff": {
+        "type_1": "grass",
+        "type_2": "flying",
+        "fast_move": "fairy_wind",
+        "charged_move_1": "aerial_ace",
+        "charged_move_2": "energy_ball",
+        "level": 43.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 14,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 118,
+            "defense": 183,
+            "hp": 181
+        }
+    },
+
+    "lapras": {
+        "type_1": "water",
+        "type_2": "ice",
+        "fast_move": "psywave",
+        "charged_move_1": "sparkling_aria",
+        "charged_move_2": "ice_beam",
+        "level": 22.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 10,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 165,
+            "defense": 174,
+            "hp": 277
+        }
+    },
+
+    "mandibuzz": {
+        "type_1": "dark",
+        "type_2": "flying",
+        "fast_move": "air_slash",
+        "charged_move_1": "aerial_ace",
+        "charged_move_2": "dark_pulse",
+        "level": 27.5,
+        "ivs": {
+            "attack": 0,
+            "defense": 13,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 129,
+            "defense": 205,
+            "hp": 242
+        }
+    },
+
+    "marowak": {
+        "type_1": "ground",
+        "type_2": "none",
+        "fast_move": "mud_slap",
+        "charged_move_1": "bone_club",
+        "charged_move_2": "rock_slide",
+        "level": 33.5,
+        "ivs": {
+            "attack": 0,
+            "defense": 14,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 144,
+            "defense": 186,
+            "hp": 155
+        }
+    },
+    
+    "moltres_galarian": {
+        "type_1": "dark",
+        "type_2": "flying",
+        "fast_move": "sucker_punch",
+        "charged_move_1": "fly",
+        "charged_move_2": "brave_bird",
+        "level": 18.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 13,
+            "hp": 12
+        },
+        "base_stats": {
+            "attack": 202,
+            "defense": 231,
+            "hp": 207
+        }
+    },
+
+    "primeape": {
+        "type_1": "fighting",
+        "type_2": "none",
+        "fast_move": "karate_chop",
+        "charged_move_1": "rage_fist",
+        "charged_move_2": "ice_punch",
+        "level": 24.5,
+        "ivs": {
+            "attack": 1,
+            "defense": 15,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 207,
+            "defense": 138,
+            "hp": 163
+        }
+    },
+
+    "quagsire": {
+        "type_1": "water",
+        "type_2": "ground",
+        "fast_move": "mud_shot",
+        "charged_move_1": "aqua_tail",
+        "charged_move_2": "stone_edge",
+        "level": 29.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 15,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 152,
+            "defense": 143,
+            "hp": 216
+        }
+    },
+
+    "sableye": {
+        "type_1": "dark",
+        "type_2": "ghost",
+        "fast_move": "shadow_claw",
+        "charged_move_1": "foul_play",
+        "charged_move_2": "power_gem",
+        "level": 49.5,
+        "ivs": {
+            "attack": 0,
+            "defense": 15,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 141,
+            "defense": 136,
+            "hp": 137
+        }
+    },
+
+    "scizor": {
+        "type_1": "bug",
+        "type_2": "steel",
+        "fast_move": "bullet_punch",
+        "charged_move_1": "night_slash",
+        "charged_move_2": "trailblaze",
+        "level": 18.5,
+        "ivs": {
+            "attack": 1,
+            "defense": 15,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 236,
+            "defense": 181,
+            "hp": 172
+        }
+    },
+
+    "steelix": {
+        "type_1": "ground",
+        "type_2": "steel",
+        "fast_move": "thunder_fang",
+        "charged_move_1": "psychic_fangs",
+        "charged_move_2": "breaking_swipe",
+        "level": 24.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 14,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 148,
+            "defense": 272,
+            "hp": 181
+        }
+    },
+
+    "stunfisk": {
+        "type_1": "ground",
+        "type_2": "electric",
+        "fast_move": "thunder_shock",
+        "charged_move_1": "mud_bomb",
+        "charged_move_2": "discharge",
+        "level": 27.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 12,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 144,
+            "defense": 171,
+            "hp": 240
+        }
+    },
+
+    "swampert": {
+        "type_1": "water",
+        "type_2": "ground",
+        "fast_move": "mud_shot",
+        "charged_move_1": "hydro_cannon",
+        "charged_move_2": "sludge",
+        "level": 19.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 14,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 208,
+            "defense": 175,
+            "hp": 225
+        }
+    },
+
+    "talonflame": {
+        "type_1": "fire",
+        "type_2": "flying",
+        "fast_move": "incinerate",
+        "charged_move_1": "fly",
+        "charged_move_2": "flame_charge",
+        "level": 26.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 13,
+            "hp": 15
+        },
+        "base_stats": {
+            "attack": 176,
+            "defense": 155,
+            "hp": 186
+        }
+    },
+
+    "tinkaton": {
+        "type_1": "fairy",
+        "type_2": "steel",
+        "fast_move": "fairy_wind",
+        "charged_move_1": "bulldoze",
+        "charged_move_2": "play_rough",
+        "level": 25.0,
+        "ivs": {
+            "attack": 4,
+            "defense": 15,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 155,
+            "defense": 196,
+            "hp": 198
+        }
+    },
+
+    "typhlosion": {
+        "type_1": "fire",
+        "type_2": "none",
+        "fast_move": "incinerate",
+        "charged_move_1": "thunder_punch",
+        "charged_move_2": "blast_burn",
+        "level": 19.5,
+        "ivs": {
+            "attack": 0,
+            "defense": 15,
+            "hp": 13
+        },
+        "base_stats": {
+            "attack": 223,
+            "defense": 173,
+            "hp": 186
+        }
+    },
+
+    "weezing_galarian": {
+        "type_1": "poison",
+        "type_2": "fairy",
+        "fast_move": "fairy_wind",
+        "charged_move_1": "brutal_swing",
+        "charged_move_2": "sludge",
+        "level": 25.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 14,
+            "hp": 14
+        },
+        "base_stats": {
+            "attack": 174,
+            "defense": 197,
+            "hp": 163
+        }
+    },
+
+    "wigglytuff": {
+        "type_1": "normal",
+        "type_2": "fairy",
+        "fast_move": "charm",
+        "charged_move_1": "swift",
+        "charged_move_2": "icy_wind",
+        "level": 30.0,
+        "ivs": {
+            "attack": 0,
+            "defense": 15,
+            "hp": 12
+        },
+        "base_stats": {
+            "attack": 156,
+            "defense": 90,
+            "hp": 295
+        }
     }
-}
 }
