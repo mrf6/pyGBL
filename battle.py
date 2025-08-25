@@ -8,8 +8,12 @@ with open('pokemon.json', 'r') as f:
 with open('moves.json', 'r') as f:
     MOVE_DATA = json.load(f)
 
+with open('types.json', 'r') as f:
+    TYPE_CHART = json.load(f)
 
 
+
+                         
 
 CP_MULTIPLIERS = {
     1: 0.094, 1.5: 0.135137432, 2: 0.16639787, 2.5: 0.192650919, 3: 0.21573247,
@@ -132,10 +136,13 @@ class Battle:
 
 
     def damage_dealt(self, attacker, defender, move):
-        # TODO: implement type effectiveness
+        effectiveness = TYPE_CHART[move.type][defender.type_1]
+        if defender.type_2 != "none":
+            effectiveness *= TYPE_CHART[move.type][defender.type_2]
+
         stab = 1.2 if move.type in {attacker.type_1, attacker.type_2} else 1.0
         bonus = 1.3
-        return math.floor(0.5 * move.damage * ((attacker.attack * STAT_MULTIPLIERS[attacker.attack_status]) / (defender.defense * STAT_MULTIPLIERS[defender.defense_status])) * stab * bonus) + 1
+        return math.floor(0.5 * move.damage * ((attacker.attack * STAT_MULTIPLIERS[attacker.attack_status]) / (defender.defense * STAT_MULTIPLIERS[defender.defense_status])) * effectiveness * stab * bonus) + 1
 
         
     def get_fast_move_damage(self, attacker, defender):
