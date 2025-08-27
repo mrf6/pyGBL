@@ -149,14 +149,9 @@ class Battle:
         return self.damage_dealt(attacker, defender, MOVES[attacker.fast_move])
     
 
-    def get_charged_move_1_damage(self, attacker, defender):
-        return self.damage_dealt(attacker, defender, MOVES[attacker.charged_move_1])
+    def get_charged_move_damage(self, attacker, defender, charged_move):
+        return self.damage_dealt(attacker, defender, MOVES[attacker.charged_move_1]) if charged_move == 1 else self.damage_dealt(attacker, defender, MOVES[attacker.charged_move_2])
     
-
-    def get_charged_move_2_damage(self, attacker, defender):
-        return self.damage_dealt(attacker, defender, MOVES[attacker.charged_move_2])
-            
-
 
     def throw_fast_move(self, attacker, defender):
         attacker.energy = min(100, attacker.energy + MOVES[attacker.fast_move].energy_gain)
@@ -164,34 +159,28 @@ class Battle:
         attacker.action = 'X'
 
 
-    def throw_charged_move_1(self, attacker, defender, shield):
-        attacker.energy -= MOVES[attacker.charged_move_1].energy_cost
+    def throw_charged_move(self, attacker, defender, shield, charged_move_number):
+        move = MOVES[attacker.charged_move_1] if charged_move_number == 1 else MOVES[attacker.charged_move_2]
+        attacker.energy -= MOVES[attacker.charged_move_1].energy_cost if charged_move_number == 1 else MOVES[attacker.charged_move_2].energy_cost
 
         if shield:
             defender.hp -= 1
             defender.shields -= 1
-            attacker.action = 'O (shielded)'
+            attacker.action = 'used ' + MOVES[attacker.charged_move_1].name + ', shielded' if charged_move_number == 1 else 'used ' + MOVES[attacker.charged_move_2].name + ', shielded'
         
         else:
             defender.hp -= self.get_charged_move_1_damage(attacker, defender)
-            attacker.action = 'O (not shielded)'
+            attacker.action = 'used ' + MOVES[attacker.charged_move_1].name + ', not shielded' if charged_move_number == 1 else 'used ' + MOVES[attacker.charged_move_2].name + ', not shielded'
 
         self.last_charged_move_turn = self.turn
 
+        if move.buff_probability == 1.0 or (move.buff_probability > 0.0 and random.random() < move.buff_probability):
+            attacker.attack_status += move.user_attack_buff
+            attacker.defense_status += move.user_defense_buff
+            defender.attack_status += move.opponent_attack_buff
+            defender.defense_status += move.opponent_defense_buff
+            
 
-    def throw_charged_move_2(self, attacker, defender, shield):
-        attacker.energy -= MOVES[attacker.charged_move_2].energy_cost
-
-        if shield:
-            defender.hp -= 1
-            defender.shields -= 1
-            attacker.action = 'O (shielded)'
-        
-        else:
-            defender.hp -= self.get_charged_move_2_damage(attacker, defender)
-            attacker.action = 'O (not shielded)'
-
-        self.last_charged_move_turn = self.turn
 
 
 
@@ -214,11 +203,15 @@ class Battle:
         # if not enough energy for charged move, throw fast move
         if attacker.energy < MOVES[attacker.charged_move_1].energy_cost:
             return 3
+        
+
+        
+
             
         
 
     
-    def shield_decision(self, attacker, defender, charge_move_thrown):
+    def shield_decision(self, attacker, defender, charged_move_thrown):
         """
         charged_move_thrown = 1 --> Charged Move 1
         charged_move_thrown = 2 --> Charged Move 2
@@ -229,12 +222,7 @@ class Battle:
             return False
         
         # calculate how many more turns you will survive if you dont shield
-        if charge_move_thrown == 1:
-            hp_remaining = defender.hp - self.get_charged_move_1_damage(attacker, defender)
-
-        else:
-            hp_remaining = defender.hp - self.get_charged_move_2_damage(attacker, defender)
-
+        hp_remaining = defender.hp - self.get_charged_move_damage(attacker, defender, charged_move_thrown)
         
         turns_alive = min(0, hp_remaining) // MOVES[attacker.fast_move].damage * MOVES[attacker.fast_move].turns
 
@@ -263,29 +251,34 @@ class Battle:
         # CMP tie
         if attacker_action in {1,2} and defender_action in {1,2}:
             # TODO: IMPLEMENT ATTACK TIE COIN FLIP
-            if attacker.starting_attack >= defender.starting_attack:
-                if attacker_action == 1:
-                    self.throw_charged_move_1(attacker, defender, self.shield_decision(attacker, defender, 1))
-                else:
-                    self.throw_charged_move_2(attacker, defender, self.shield_decision(attacker, defender, 2))
+
+
+            if attacker.starting_attack > defender.starting_attack:
+                self.throw_charged_move(attacker, defender, self.shield_decision(attacker, defender, attacker_action), attacker_action)
 
                 if defender.hp > 0:
-                    if defender_action == 1:
-                        self.throw_charged_move_1(defender, attacker, self.shield_decision(defender, attacker, 1))
-                    else:
-                        self.throw_charged_move_2(defender, attacker, self.shield_decision(defender, attacker, 2))
+                    self.throw_charged_move(defender, attacker, self.shield_decision(defender, attacker, defender_action), defender_action)
 
-            else:
-                if defender_action == 1:
-                    self.throw_charged_move_1(defender, attacker, self.shield_decision(defender, attacker, 1))
-                else:
-                    self.throw_charged_move_2(defender, attacker, self.shield_decision(defender, attacker, 2))
+            elif attacker.starting_attack < defender.starting_attack:
+                self.throw_charged_move(defender, attacker, self.shield_decision(defender, attacker, defender_action), defender_action)
                 
                 if attacker.hp > 0:
-                    if attacker_action == 1:
-                        self.throw_charged_move_1(attacker, defender, self.shield_decision(attacker, defender, 1))
-                    else:
-                        self.throw_charged_move_2(attacker, defender, self.shield_decision(attacker, defender, 2))
+                    self.throw_charged_move(attacker, defender, self.shield_decision(attacker, defender, attacker_action), attacker_action)
+
+            else:   # coin flip CMP tie
+                if random.random() < 0.5:
+                    self.throw_charged_move(attacker, defender, self.shield_decision(attacker, defender, attacker_action), attacker_action)
+
+                    if defender.hp > 0:
+                        self.throw_charged_move(defender, attacker, self.shield_decision(defender, attacker, defender_action), defender_action)
+
+                else:
+                    self.throw_charged_move(defender, attacker, self.shield_decision(defender, attacker, defender_action), defender_action)
+                    
+                    if attacker.hp > 0:
+                        self.throw_charged_move(attacker, defender, self.shield_decision(attacker, defender, attacker_action), attacker_action)
+
+            return 
 
         
         if attacker_action == 3:
@@ -305,12 +298,7 @@ class Battle:
         
 
         if attacker_action in {1,2}: 
-            if attacker_action == 1:
-                self.throw_charged_move_1(attacker, defender, self.shield_decision(attacker, defender, 1))
-
-            else:
-                self.throw_charged_move_2(attacker, defender, self.shield_decision(attacker, defender, 2))
-
+            self.throw_charged_move(attacker, defender, self.shield_decision(attacker, defender, attacker_action), attacker_action)
 
             if defender.hp > 0:
                 self.throw_fast_move(defender, attacker)
@@ -318,11 +306,7 @@ class Battle:
 
 
         if defender_action in {1,2}:
-            if defender_action == 1:
-                self.throw_charged_move_1(defender, attacker, self.shield_decision(defender, attacker, 1))
-
-            else:
-                self.throw_charged_move_2(defender, attacker, self.shield_decision(defender, attacker, 2))
+            self.throw_charged_move(defender, attacker, self.shield_decision(defender, attacker, defender_action), defender_action)
 
             if attacker.hp > 0:
                 self.throw_fast_move(attacker, defender)
@@ -353,10 +337,10 @@ if __name__ == '__main__':
     POKEMON = {i: Pokemon(i, POKEMON_DATA[i]) for i in POKEMON_DATA}
     MOVES = {i: Move(i, MOVE_DATA[i]) for i in MOVE_DATA}
 
-    attacker = POKEMON['clodsire']
+    attacker = POKEMON['marowak']
     defender = POKEMON['furret']
 
-    attacker_shields = 0
+    attacker_shields = 2
     defender_shields = 2
 
     battle = Battle(attacker, defender, attacker_shields, defender_shields)
