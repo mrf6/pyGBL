@@ -174,6 +174,8 @@ class Battle:
 
         self.last_charged_move_turn = self.turn
 
+
+        # apply buffs/debuffs
         if move.buff_probability == 1.0 or (move.buff_probability > 0.0 and random.random() < move.buff_probability):
             attacker.attack_status += move.user_attack_buff
             attacker.defense_status += move.user_defense_buff
@@ -247,12 +249,8 @@ class Battle:
 
         
 
-        
         # CMP tie
         if attacker_action in {1,2} and defender_action in {1,2}:
-            # TODO: IMPLEMENT ATTACK TIE COIN FLIP
-
-
             if attacker.starting_attack > defender.starting_attack:
                 self.throw_charged_move(attacker, defender, self.shield_decision(attacker, defender, attacker_action), attacker_action)
 
