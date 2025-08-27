@@ -193,8 +193,8 @@
         "type_1": "dark",
         "type_2": "poison",
         "fast_move": "poison_sting",
-        "charged_move_1": "crunch",
-        "charged_move_2": "aqua_tail",
+        "charged_move_1": "aqua_tail",
+        "charged_move_2": "crunch",
         "level": 23.0,
         "ivs": {
             "attack": 2,
