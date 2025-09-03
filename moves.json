@@ -3671,18 +3671,6 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "water_gun_fast_blastoise": {
-        "type": "water",
-        "damage": 6,
-        "energy_cost": 0,
-        "energy_gain": 4,
-        "turns": 2,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 0.0
-    },
     "water_pulse": {
         "type": "water",
         "damage": 80,
