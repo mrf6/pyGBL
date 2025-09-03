@@ -204,11 +204,101 @@ class Battle:
             return 3
         
         turns_until_opponent_fast_move_registers = MOVES[defender.fast_move].turns - ((self.turn - self.last_charged_move_turn) % MOVES[defender.fast_move].turns)
-        
-        # if you will die to the next fast move and can't throw another fast move, throw the charged move that will do the most damage
 
         
-        # optimal move timing
+        # if you will die to the next fast move 
+        if attacker.hp <= self.get_fast_move_damage(defender, attacker):
+            # but can still throw a fast move before dying
+            if MOVES[attacker.fast_move].turns + 1 < turns_until_opponent_fast_move_registers:
+                # throw fast move
+                return 3
+            # if not enough energy for charged move 2, throw charged move 1
+            if attacker.energy < MOVES[attacker.charged_move_2].energy_cost:
+                return 1
+            
+            move_2_does_more_damage = self.get_charged_move_damage(attacker, defender, 2) >= self.get_charged_move_damage(attacker, defender, 1)
+
+            move_1_debuffs_opponent = MOVES[attacker.charged_move_1].opponent_attack_buff < 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0
+            move_2_debuffs_opponent = MOVES[attacker.charged_move_2].opponent_attack_buff < 0 or MOVES[attacker.charged_move_2].opponent_defense_buff < 0
+
+            # if defender has no shields or neither move debuffs opponent
+            if defender.shields == 0 or (not move_1_debuffs_opponent and not move_2_debuffs_opponent):
+                # and charged move 2 does more damage
+                if move_2_does_more_damage:
+                    # throw charged move 2
+                    return 2
+                # else, throw charged move 1
+                return 1
+            
+            
+            
+            # if you have enough energy for both charged moves (given) and both charged moves could debuff opponent
+            if move_1_debuffs_opponent and move_2_debuffs_opponent:
+                # if charged move 2 does more damage and has a higher debuff chance, throw charged move 2
+                if move_2_does_more_damage and MOVES[attacker.charged_move_2].buff_probability >= MOVES[attacker.charged_move_1].buff_probability:
+                    return 2
+                
+                # if charged move 1 does more damage and has a higher debuff chance, throw charged move 1
+                if not move_2_does_more_damage and MOVES[attacker.charged_move_2].buff_probability <= MOVES[attacker.charged_move_1].buff_probability:
+                    return 1
+                
+                # if a debuff is guaranteed, but will do less damage
+                if MOVES[attacker.charged_move_1].buff_probability == 1.0 or MOVES[attacker.charged_move_2].buff_probability == 1.0:
+                    # bait the debuff move 75% of the time
+                    if random.random() < 0.75:
+                        if MOVES[attacker.charged_move_1].buff_probability == 1.0:
+                            return 1
+                        return 2
+                    
+                    if MOVES[attacker.charged_move_1].buff_probability == 1.0:
+                        return 2
+                    return 1
+                    
+                # if debuff is not guaranteed, just throw the harder hitting move
+                if move_2_does_more_damage:
+                    return 2
+                return 1
+            
+
+            # if only move 1 is a debuff move
+            if move_1_debuffs_opponent and not move_2_debuffs_opponent:
+                # if move 1 also does more damage, throw move 1
+                if not move_2_does_more_damage:
+                    return 1
+                
+                # if move 1 does less damage but is guaranteed to debuff, bait 75% of the time
+                if MOVES[attacker.charged_move_1].buff_probability == 1.0:
+                    if random.random() < 0.75:
+                        return 1
+                    return 2
+                
+                # if move 1 debuff is not guaranteed and also does less damage, always throw move 2
+                return 2
+            
+            # if only move 2 is a debuff move
+            if move_2_debuffs_opponent and not move_1_debuffs_opponent:
+                # if move 2 also does more damage, throw move 1
+                if move_2_does_more_damage:
+                    return 2
+                
+                # if move 2 does less damage but is guaranteed to debuff, bait 75% of the time
+                if MOVES[attacker.charged_move_2].buff_probability == 1.0:
+                    if random.random() < 0.75:
+                        return 2
+                    return 1
+                
+                # if move 2 debuff is not guaranteed and also does less damage, always throw move 1
+                return 1
+
+
+                
+
+
+
+        
+        # TODO: optimal move timing
+
+
         
 
 
