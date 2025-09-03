@@ -195,9 +195,6 @@ class Battle:
         3 = Apply fast move damage
         """
 
-        if attacker.energy >= MOVES[attacker.charged_move_1].energy_cost:
-            return 1
-
         # if waiting for fast move to register, do nothing
         if (self.turn - self.last_charged_move_turn) % MOVES[attacker.fast_move].turns != 0:
             return None
@@ -206,8 +203,14 @@ class Battle:
         if attacker.energy < MOVES[attacker.charged_move_1].energy_cost:
             return 3
         
+        turns_until_opponent_fast_move_registers = MOVES[defender.fast_move].turns - ((self.turn - self.last_charged_move_turn) % MOVES[defender.fast_move].turns)
+        
+        # if you will die to the next fast move and can't throw another fast move, throw the charged move that will do the most damage
 
         
+        # optimal move timing
+        
+
 
             
         

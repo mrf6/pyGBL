@@ -35,10 +35,34 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
+    "aegislash_charge_air_slash": {
+        "type": "flying",
+        "damage": 0,
+        "energy_cost": 0,
+        "energy_gain": 6,
+        "turns": 3,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
+    "aegislash_charge_psycho_cut": {
+        "type": "psychic",
+        "damage": 0,
+        "energy_cost": 0,
+        "energy_gain": 6,
+        "turns": 2,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
     "aerial_ace": {
         "type": "flying",
-        "damage": 55,
-        "energy_cost": 40,
+        "damage": 60,
+        "energy_cost": 45,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -107,6 +131,18 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
+    "aqua_step": {
+        "type": "water",
+        "damage": 55,
+        "energy_cost": 40,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 1,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 1.0
+    },
     "aqua_tail": {
         "type": "water",
         "damage": 55,
@@ -133,8 +169,8 @@
     },
     "aura_sphere": {
         "type": "fighting",
-        "damage": 100,
-        "energy_cost": 55,
+        "damage": 80,
+        "energy_cost": 40,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -143,8 +179,20 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "aura_wheel": {
+    "aura_wheel_dark": {
         "type": "dark",
+        "damage": 100,
+        "energy_cost": 45,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 1,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 1.0
+    },
+    "aura_wheel_electric": {
+        "type": "electric",
         "damage": 100,
         "energy_cost": 45,
         "energy_gain": 0,
@@ -227,6 +275,18 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
+    "blaze_kick": {
+        "type": "fire",
+        "damage": 60,
+        "energy_cost": 40,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
     "bleakwind_storm": {
         "type": "flying",
         "damage": 60,
@@ -253,7 +313,19 @@
     },
     "body_slam": {
         "type": "normal",
-        "damage": 50,
+        "damage": 55,
+        "energy_cost": 35,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
+    "bone_club": {
+        "type": "ground",
+        "damage": 55,
         "energy_cost": 35,
         "energy_gain": 0,
         "turns": 1,
@@ -267,18 +339,6 @@
         "type": "normal",
         "damage": 150,
         "energy_cost": 70,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 0.0
-    },
-    "bone_club": {
-        "type": "ground",
-        "damage": 55,
-        "energy_cost": 35,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -302,14 +362,14 @@
     "breaking_swipe": {
         "type": "dragon",
         "damage": 50,
-        "energy_cost": 35,
+        "energy_cost": 50,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
         "opponent_attack_buff": -1,
         "user_defense_buff": 0,
         "opponent_defense_buff": 0,
-        "buff_probability": 0.5
+        "buff_probability": 1.0
     },
     "brick_break": {
         "type": "fighting",
@@ -323,10 +383,10 @@
         "opponent_defense_buff": -1,
         "buff_probability": 1.0
     },
-    "brutal_swing": {
-        "type": "dark",
-        "damage": 55,
-        "energy_cost": 35,
+    "brine": {
+        "type": "water",
+        "damage": 60,
+        "energy_cost": 50,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -335,10 +395,10 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "brine": {
-        "type": "water",
-        "damage": 60,
-        "energy_cost": 50,
+    "brutal_swing": {
+        "type": "dark",
+        "damage": 55,
+        "energy_cost": 35,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -445,15 +505,27 @@
     },
     "charm": {
         "type": "fairy",
-        "damage": 15,
+        "damage": 13,
         "energy_cost": 0,
-        "energy_gain": 6,
+        "energy_gain": 8,
         "turns": 3,
         "user_attack_buff": 0,
         "opponent_attack_buff": 0,
         "user_defense_buff": 0,
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
+    },
+    "chilling_water": {
+        "type": "water",
+        "damage": 60,
+        "energy_cost": 45,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": -1,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 1.0
     },
     "clanging_scales": {
         "type": "dragon",
@@ -483,7 +555,7 @@
         "type": "psychic",
         "damage": 16,
         "energy_cost": 0,
-        "energy_gain": 12,
+        "energy_gain": 14,
         "turns": 4,
         "user_attack_buff": 0,
         "opponent_attack_buff": 0,
@@ -709,9 +781,9 @@
     },
     "dragon_breath": {
         "type": "dragon",
-        "damage": 4,
+        "damage": 3,
         "energy_cost": 0,
-        "energy_gain": 3,
+        "energy_gain": 4,
         "turns": 1,
         "user_attack_buff": 0,
         "opponent_attack_buff": 0,
@@ -721,8 +793,8 @@
     },
     "dragon_claw": {
         "type": "dragon",
-        "damage": 50,
-        "energy_cost": 35,
+        "damage": 80,
+        "energy_cost": 50,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -746,7 +818,7 @@
     "dragon_pulse": {
         "type": "dragon",
         "damage": 90,
-        "energy_cost": 60,
+        "energy_cost": 55,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -757,10 +829,22 @@
     },
     "dragon_tail": {
         "type": "dragon",
-        "damage": 13,
+        "damage": 9,
         "energy_cost": 0,
-        "energy_gain": 9,
+        "energy_gain": 12,
         "turns": 3,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
+    "draining_kiss": {
+        "type": "fairy",
+        "damage": 60,
+        "energy_cost": 55,
+        "energy_gain": 0,
+        "turns": 1,
         "user_attack_buff": 0,
         "opponent_attack_buff": 0,
         "user_defense_buff": 0,
@@ -779,21 +863,9 @@
         "opponent_defense_buff": 0,
         "buff_probability": 1.0
     },
-    "draining_kiss": {
-        "type": "fairy",
-        "damage": 60,
-        "energy_cost": 55,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 0.0
-    },
     "drill_peck": {
         "type": "flying",
-        "damage": 65,
+        "damage": 70,
         "energy_cost": 40,
         "energy_gain": 0,
         "turns": 1,
@@ -865,9 +937,9 @@
     },
     "ember": {
         "type": "fire",
-        "damage": 7,
+        "damage": 4,
         "energy_cost": 0,
-        "energy_gain": 7,
+        "energy_gain": 9,
         "turns": 2,
         "user_attack_buff": 0,
         "opponent_attack_buff": 0,
@@ -898,6 +970,30 @@
         "user_defense_buff": 0,
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
+    },
+    "fairy_wind": {
+        "type": "fairy",
+        "damage": 4,
+        "energy_cost": 0,
+        "energy_gain": 9,
+        "turns": 2,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
+    "feather_dance": {
+        "type": "flying",
+        "damage": 35,
+        "energy_cost": 50,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": -2,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 1.0
     },
     "feint_attack": {
         "type": "dark",
@@ -959,48 +1055,24 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "blaze_kick": {
-        "type": "fire",
-        "damage": 60,
-        "energy_cost": 40,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 0.0
-    },
-    "fairy_wind": {
-        "type": "fairy",
-        "damage": 4,
-        "energy_cost": 0,
-        "energy_gain": 9,
-        "turns": 2,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 0.0
-    },
-    "feather_dance": {
-        "type": "flying",
-        "damage": 35,
-        "energy_cost": 50,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": -2,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 1.0
-    },
     "fire_spin": {
         "type": "fire",
         "damage": 11,
         "energy_cost": 0,
         "energy_gain": 10,
         "turns": 3,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
+    "flamethrower": {
+        "type": "fire",
+        "damage": 90,
+        "energy_cost": 55,
+        "energy_gain": 0,
+        "turns": 1,
         "user_attack_buff": 0,
         "opponent_attack_buff": 0,
         "user_defense_buff": 0,
@@ -1033,20 +1105,8 @@
     },
     "flame_wheel": {
         "type": "fire",
-        "damage": 60,
-        "energy_cost": 55,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 0.0
-    },
-    "flamethrower": {
-        "type": "fire",
-        "damage": 90,
-        "energy_cost": 55,
+        "damage": 80,
+        "energy_cost": 45,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -1322,7 +1382,7 @@
     "gyro_ball": {
         "type": "steel",
         "damage": 80,
-        "energy_cost": 60,
+        "energy_cost": 50,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -1823,6 +1883,18 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
+    "leafage": {
+        "type": "grass",
+        "damage": 6,
+        "energy_cost": 0,
+        "energy_gain": 8,
+        "turns": 2,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
     "leaf_blade": {
         "type": "grass",
         "damage": 70,
@@ -1834,18 +1906,6 @@
         "user_defense_buff": 0,
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
-    },
-    "leaf_tornado": {
-        "type": "grass",
-        "damage": 45,
-        "energy_cost": 40,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": -2,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 0.5
     },
     "leaf_storm": {
         "type": "grass",
@@ -1859,17 +1919,17 @@
         "opponent_defense_buff": 0,
         "buff_probability": 1.0
     },
-    "leafage": {
+    "leaf_tornado": {
         "type": "grass",
-        "damage": 6,
-        "energy_cost": 0,
-        "energy_gain": 7,
-        "turns": 2,
+        "damage": 45,
+        "energy_cost": 40,
+        "energy_gain": 0,
+        "turns": 1,
         "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
+        "opponent_attack_buff": -2,
         "user_defense_buff": 0,
         "opponent_defense_buff": 0,
-        "buff_probability": 0.0
+        "buff_probability": 0.5
     },
     "lick": {
         "type": "ghost",
@@ -1991,9 +2051,9 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "mega_drain": {
-        "type": "grass",
-        "damage": 25,
+    "megahorn": {
+        "type": "bug",
+        "damage": 110,
         "energy_cost": 55,
         "energy_gain": 0,
         "turns": 1,
@@ -2003,9 +2063,9 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "megahorn": {
-        "type": "bug",
-        "damage": 110,
+    "mega_drain": {
+        "type": "grass",
+        "damage": 25,
         "energy_cost": 55,
         "energy_gain": 0,
         "turns": 1,
@@ -2123,18 +2183,6 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "mud_bomb": {
-        "type": "ground",
-        "damage": 60,
-        "energy_cost": 40,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 0.0
-    },
     "muddy_water": {
         "type": "water",
         "damage": 35,
@@ -2146,6 +2194,18 @@
         "user_defense_buff": 0,
         "opponent_defense_buff": 0,
         "buff_probability": 0.3
+    },
+    "mud_bomb": {
+        "type": "ground",
+        "damage": 60,
+        "energy_cost": 40,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
     },
     "mud_shot": {
         "type": "ground",
@@ -2331,7 +2391,7 @@
         "type": "flying",
         "damage": 6,
         "energy_cost": 0,
-        "energy_gain": 5,
+        "energy_gain": 8,
         "turns": 2,
         "user_attack_buff": 0,
         "opponent_attack_buff": 0,
@@ -2447,7 +2507,7 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "power-up_punch": {
+    "power_up_punch": {
         "type": "fighting",
         "damage": 20,
         "energy_cost": 35,
@@ -2689,7 +2749,7 @@
     },
     "rock_slide": {
         "type": "rock",
-        "damage": 65,
+        "damage": 75,
         "energy_cost": 45,
         "energy_gain": 0,
         "turns": 1,
@@ -2783,6 +2843,18 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
+    "sandsear_storm": {
+        "type": "ground",
+        "damage": 60,
+        "energy_cost": 45,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": -1,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 1.0
+    },
     "sand_attack": {
         "type": "ground",
         "damage": 2,
@@ -2807,18 +2879,6 @@
         "opponent_defense_buff": -1,
         "buff_probability": 1.0
     },
-    "sandsear_storm": {
-        "type": "ground",
-        "damage": 60,
-        "energy_cost": 45,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": -1,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 1.0
-    },
     "scald": {
         "type": "water",
         "damage": 85,
@@ -2841,7 +2901,7 @@
         "opponent_attack_buff": -1,
         "user_defense_buff": 0,
         "opponent_defense_buff": 0,
-        "buff_probability": 0.3
+        "buff_probability": 0.1
     },
     "scratch": {
         "type": "normal",
@@ -2857,8 +2917,8 @@
     },
     "seed_bomb": {
         "type": "grass",
-        "damage": 65,
-        "energy_cost": 45,
+        "damage": 55,
+        "energy_cost": 40,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -2989,8 +3049,8 @@
     },
     "sky_attack": {
         "type": "flying",
-        "damage": 85,
-        "energy_cost": 55,
+        "damage": 75,
+        "energy_cost": 50,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -3037,7 +3097,7 @@
     },
     "smack_down": {
         "type": "rock",
-        "damage": 11,
+        "damage": 12,
         "energy_cost": 0,
         "energy_gain": 8,
         "turns": 3,
@@ -3131,11 +3191,23 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
+    "springtide_storm": {
+        "type": "fairy",
+        "damage": 60,
+        "energy_cost": 45,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": -1,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 1.0
+    },
     "steel_wing": {
         "type": "steel",
         "damage": 7,
         "energy_cost": 0,
-        "energy_gain": 6,
+        "energy_gain": 5,
         "turns": 2,
         "user_attack_buff": 0,
         "opponent_attack_buff": 0,
@@ -3299,18 +3371,6 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "techno_blast_normal": {
-        "type": "normal",
-        "damage": 120,
-        "energy_cost": 55,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 0.0
-    },
     "techno_blast_burn": {
         "type": "fire",
         "damage": 120,
@@ -3347,6 +3407,18 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
+    "techno_blast_normal": {
+        "type": "normal",
+        "damage": 120,
+        "energy_cost": 55,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
     "techno_blast_shock": {
         "type": "electric",
         "damage": 120,
@@ -3363,6 +3435,18 @@
         "type": "electric",
         "damage": 100,
         "energy_cost": 60,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
+    "thunderbolt": {
+        "type": "electric",
+        "damage": 90,
+        "energy_cost": 55,
         "energy_gain": 0,
         "turns": 1,
         "user_attack_buff": 0,
@@ -3419,18 +3503,6 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "thunderbolt": {
-        "type": "electric",
-        "damage": 90,
-        "energy_cost": 55,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 0.0
-    },
     "torch_song": {
         "type": "fire",
         "damage": 70,
@@ -3467,18 +3539,6 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "tri_attack": {
-        "type": "normal",
-        "damage": 65,
-        "energy_cost": 50,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": -1,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": -1,
-        "buff_probability": 0.5
-    },
     "triple_axel": {
         "type": "ice",
         "damage": 60,
@@ -3490,6 +3550,18 @@
         "user_defense_buff": 0,
         "opponent_defense_buff": 0,
         "buff_probability": 1.0
+    },
+    "tri_attack": {
+        "type": "normal",
+        "damage": 65,
+        "energy_cost": 50,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": -1,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": -1,
+        "buff_probability": 0.5
     },
     "twister": {
         "type": "dragon",
@@ -3515,19 +3587,7 @@
         "opponent_defense_buff": -1,
         "buff_probability": 0.3
     },
-    "v-create": {
-        "type": "fire",
-        "damage": 95,
-        "energy_cost": 40,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
-        "user_defense_buff": -3,
-        "opponent_defense_buff": 0,
-        "buff_probability": 1.0
-    },
-    "vise_grip": {
+    "vice_grip": {
         "type": "normal",
         "damage": 40,
         "energy_cost": 40,
@@ -3553,7 +3613,7 @@
     },
     "volt_switch": {
         "type": "electric",
-        "damage": 12,
+        "damage": 14,
         "energy_cost": 0,
         "energy_gain": 16,
         "turns": 4,
@@ -3575,6 +3635,30 @@
         "opponent_defense_buff": 0,
         "buff_probability": 1.0
     },
+    "v_create": {
+        "type": "fire",
+        "damage": 95,
+        "energy_cost": 40,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": -3,
+        "opponent_defense_buff": 0,
+        "buff_probability": 1.0
+    },
+    "waterfall": {
+        "type": "water",
+        "damage": 12,
+        "energy_cost": 0,
+        "energy_gain": 8,
+        "turns": 3,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
     "water_gun": {
         "type": "water",
         "damage": 3,
@@ -3587,24 +3671,24 @@
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "water_pulse": {
+    "water_gun_fast_blastoise": {
         "type": "water",
-        "damage": 80,
-        "energy_cost": 55,
-        "energy_gain": 0,
-        "turns": 1,
+        "damage": 6,
+        "energy_cost": 0,
+        "energy_gain": 4,
+        "turns": 2,
         "user_attack_buff": 0,
         "opponent_attack_buff": 0,
         "user_defense_buff": 0,
         "opponent_defense_buff": 0,
         "buff_probability": 0.0
     },
-    "waterfall": {
+    "water_pulse": {
         "type": "water",
-        "damage": 12,
-        "energy_cost": 0,
-        "energy_gain": 8,
-        "turns": 3,
+        "damage": 80,
+        "energy_cost": 50,
+        "energy_gain": 0,
+        "turns": 1,
         "user_attack_buff": 0,
         "opponent_attack_buff": 0,
         "user_defense_buff": 0,
@@ -3625,7 +3709,7 @@
     },
     "weather_ball_fire": {
         "type": "fire",
-        "damage": 55,
+        "damage": 60,
         "energy_cost": 35,
         "energy_gain": 0,
         "turns": 1,
@@ -3637,19 +3721,7 @@
     },
     "weather_ball_ice": {
         "type": "ice",
-        "damage": 55,
-        "energy_cost": 35,
-        "energy_gain": 0,
-        "turns": 1,
-        "user_attack_buff": 0,
-        "opponent_attack_buff": 0,
-        "user_defense_buff": 0,
-        "opponent_defense_buff": 0,
-        "buff_probability": 0.0
-    },
-    "weather_ball_rock": {
-        "type": "rock",
-        "damage": 55,
+        "damage": 60,
         "energy_cost": 35,
         "energy_gain": 0,
         "turns": 1,
@@ -3661,7 +3733,19 @@
     },
     "weather_ball_normal": {
         "type": "normal",
-        "damage": 55,
+        "damage": 60,
+        "energy_cost": 35,
+        "energy_gain": 0,
+        "turns": 1,
+        "user_attack_buff": 0,
+        "opponent_attack_buff": 0,
+        "user_defense_buff": 0,
+        "opponent_defense_buff": 0,
+        "buff_probability": 0.0
+    },
+    "weather_ball_rock": {
+        "type": "rock",
+        "damage": 60,
         "energy_cost": 35,
         "energy_gain": 0,
         "turns": 1,
@@ -3673,7 +3757,7 @@
     },
     "weather_ball_water": {
         "type": "water",
-        "damage": 55,
+        "damage": 60,
         "energy_cost": 35,
         "energy_gain": 0,
         "turns": 1,
@@ -3731,7 +3815,7 @@
         "opponent_defense_buff": -1,
         "buff_probability": 1.0
     },
-    "x-scissor": {
+    "x_scissor": {
         "type": "bug",
         "damage": 65,
         "energy_cost": 40,

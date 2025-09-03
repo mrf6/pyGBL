@@ -364,7 +364,7 @@
         "type_1": "bug",
         "type_2": "water",
         "fast_move": "fury_cutter",
-        "charged_move_1": "x-scissor",
+        "charged_move_1": "x_scissor",
         "charged_move_2": "aqua_jet",
         "level": 18.0,
         "ivs": {
