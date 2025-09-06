@@ -189,10 +189,14 @@ class Battle:
         
     def action(self, attacker, defender): 
         """
-        None = In the middle of a fast move
-        1 = Apply charged move 1 damage
-        2 = Apply charged move 2 damage
-        3 = Apply fast move damage
+        return i, j 
+        i = action type
+        j = bait percentage
+
+        i:  None = In the middle of a fast move
+            1 = Apply charged move 1 damage
+            2 = Apply charged move 2 damage
+            3 = Apply fast move damage
         """
 
         # if waiting for fast move to register, do nothing
@@ -205,6 +209,23 @@ class Battle:
         
         turns_until_opponent_fast_move_registers = MOVES[defender.fast_move].turns - ((self.turn - self.last_charged_move_turn) % MOVES[defender.fast_move].turns)
 
+        # if you have enough energy for charged move that will ko and opponent has no shields, throw it immediately
+        if defender.shields == 0 and self.get_charged_move_damage(attacker, defender, 1) >= defender.hp:
+            return 1
+        
+        if defender.shields == 0 and attacker.energy >= MOVES[attacker.charged_move_2].energy_cost and self.get_charged_move_damage(attacker, defender, 2) >= defender.hp:
+            return 2
+        
+
+        # if you can't throw another fast move before getting farmed down, or if you can't throw another fast move before opponent reaches lethal charged move, throw charged move
+        if (MOVES[attacker.fast_move].turns > MOVES[defender.fast_move].turns and attacker.hp <= -(-MOVES[attacker.fast_move].turns // MOVES[defender.fast_move].turns) * self.get_fast_move_damage(defender, attacker)) or (MOVES[attacker.fast_move].turns > MOVES[defender.fast_move].turns and ((defender.energy + ((MOVES[attacker.fast_move].turns - 1) // MOVES[defender.fast_move].turns) * MOVES[defender.fast_move].energy_gain >= MOVES[defender.charged_move_1].energy_cost and attacker.hp <= self.get_charged_move_damage(defender, attacker, 1)) or (defender.energy + ((MOVES[attacker.fast_move].turns - 1) // MOVES[defender.fast_move].turns) * MOVES[defender.fast_move].energy_gain >= MOVES[defender.charged_move_2].energy_cost and attacker.hp <= self.get_charged_move_damage(defender, attacker, 2)))):
+            if MOVES[attacker.charged_move_1].energy_cost <= attacker.energy < MOVES[attacker.charged_move_2].energy_cost:
+                return 1 
+
+            if attacker.energy >= MOVES[attacker.charged_move_2].energy_cost and self.get_charged_move_damage(attacker, defender, 2) >= self.get_charged_move_damage(attacker, defender, 1):
+                return 2
+            
+        
         
         # if you will die to the next fast move 
         if attacker.hp <= self.get_fast_move_damage(defender, attacker):
@@ -246,12 +267,17 @@ class Battle:
                 if MOVES[attacker.charged_move_1].buff_probability == 1.0 or MOVES[attacker.charged_move_2].buff_probability == 1.0:
                     # bait the debuff move 75% of the time
                     if random.random() < 0.75:
+                        # if move 1 is the guaranteed debuff move, throw it as a bait move
                         if MOVES[attacker.charged_move_1].buff_probability == 1.0:
                             return 1
+                        # otherwise move 2 must be the guaranteed debuff move, throw it as a bait move
                         return 2
                     
+                    # throw the harder hitting move 25% of the time
+                    # if move 1 is the guaranteed debuff move, move 2 must be harder hitting move
                     if MOVES[attacker.charged_move_1].buff_probability == 1.0:
                         return 2
+                    # and vice versa
                     return 1
                     
                 # if debuff is not guaranteed, just throw the harder hitting move
@@ -289,11 +315,6 @@ class Battle:
                 
                 # if move 2 debuff is not guaranteed and also does less damage, always throw move 1
                 return 1
-
-
-                
-
-
 
         
         # TODO: optimal move timing
