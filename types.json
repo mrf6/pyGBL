@@ -37,7 +37,7 @@
         "dragon": 0.625,
         "steel": 1.6,
         "dark": 1.0,
-        "fairy": 1.6
+        "fairy": 1.0
     },
     "water": {
         "normal": 1.0,
@@ -117,7 +117,7 @@
         "dragon": 1.6,
         "steel": 0.625,
         "dark": 1.0,
-        "fairy": 0.625
+        "fairy": 1.0
     },
     "fighting": {
         "normal": 1.6,
@@ -160,7 +160,7 @@
         "fairy": 1.6
     },
     "ground": {
-        "normal": 1.6,
+        "normal": 1.0,
         "fire": 1.6,
         "water": 1.0,
         "grass": 0.625,
@@ -266,7 +266,7 @@
         "grass": 1.0,
         "electric": 1.0,
         "ice": 1.0,
-        "fighting": 0.390625,
+        "fighting": 1.0,
         "poison": 1.0,
         "ground": 1.0,
         "flying": 1.0,
