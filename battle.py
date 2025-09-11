@@ -57,6 +57,37 @@ STAT_MULTIPLIERS = {-4: 0.5,
 
 
 
+OPTIMAL_MOVE_TIMING = {
+    (1,1): {i for i in range(100)},
+    (1,2): {i for i in range(1, 100, 2)},
+    (1,3): {i for i in range(2, 100, 3)},
+    (1,4): {i for i in range(3, 100, 4)},
+    (1,5): {i for i in range(4, 100, 5)},
+    (2,1): {i for i in range(0, 100, 2)},
+    (2,2): {i for i in range(0, 100, 2)},
+    (2,3): {i for i in range(2, 100, 6)},
+    (2,4): {i for i in range(2, 100, 4)},
+    (2,5): {i for i in range(4, 100, 10)},
+    (3,1): {i for i in range(0, 100, 3)},
+    (3,2): {i for i in range(3, 100, 6)},
+    (3,3): {i for i in range(0, 100, 3)},
+    (3,4): {i for i in range(3, 100, 12)},
+    (3,5): {i for i in range(9, 100, 15)},
+    (4,1): {i for i in range(0, 100, 4)},
+    (4,2): {i for i in range(0, 100, 4)},
+    (4,3): {i for i in range(8, 100, 12)},
+    (4,4): {i for i in range(0, 100, 4)},
+    (4,5): {i for i in range(4, 100, 20)},
+    (5,1): {i for i in range(0, 100, 5)},
+    (5,2): {i for i in range(5, 100, 10)},
+    (5,3): {i for i in range(5, 100, 15)},
+    (5,4): {i for i in range(15, 100, 20)},
+    (5,5): {i for i in range(0, 100, 5)}
+}
+
+
+
+
 class Move:
     def __init__(self, name, data):
         self.name = name
@@ -161,16 +192,16 @@ class Battle:
 
     def throw_charged_move(self, attacker, defender, shield, charged_move_number):
         move = MOVES[attacker.charged_move_1] if charged_move_number == 1 else MOVES[attacker.charged_move_2]
-        attacker.energy -= MOVES[attacker.charged_move_1].energy_cost if charged_move_number == 1 else MOVES[attacker.charged_move_2].energy_cost
+        attacker.energy -= move.energy_cost
 
         if shield:
             defender.hp -= 1
             defender.shields -= 1
-            attacker.action = 'used ' + MOVES[attacker.charged_move_1].name + ', shielded' if charged_move_number == 1 else 'used ' + MOVES[attacker.charged_move_2].name + ', shielded'
+            attacker.action = 'used ' + move.name + ', shielded' 
         
         else:
-            defender.hp -= self.get_charged_move_1_damage(attacker, defender)
-            attacker.action = 'used ' + MOVES[attacker.charged_move_1].name + ', not shielded' if charged_move_number == 1 else 'used ' + MOVES[attacker.charged_move_2].name + ', not shielded'
+            defender.hp -= self.get_charged_move_damage(attacker, defender, charged_move_number)
+            attacker.action = 'used ' + move.name + ', not shielded'
 
         self.last_charged_move_turn = self.turn
 
@@ -181,9 +212,6 @@ class Battle:
             attacker.defense_status += move.user_defense_buff
             defender.attack_status += move.opponent_attack_buff
             defender.defense_status += move.opponent_defense_buff
-            
-
-
 
 
         
@@ -199,126 +227,318 @@ class Battle:
             3 = Apply fast move damage
         """
 
-        # if waiting for fast move to register, do nothing
-        if (self.turn - self.last_charged_move_turn) % MOVES[attacker.fast_move].turns != 0:
-            return None
-
-        # if not enough energy for charged move, throw fast move
-        if attacker.energy < MOVES[attacker.charged_move_1].energy_cost:
+        # fast move damage registers based on turns
+        if (self.turn - self.last_charged_move_turn) % MOVES[attacker.fast_move].turns == 0:
             return 3
         
-        turns_until_opponent_fast_move_registers = MOVES[defender.fast_move].turns - ((self.turn - self.last_charged_move_turn) % MOVES[defender.fast_move].turns)
+        # if you have enough energy for a charged move, consider throwing it
+        if attacker.energy >= MOVES[attacker.charged_move_1].energy_cost and (self.turn - self.last_charged_move_turn) % MOVES[attacker.fast_move].turns == 1:
+            
+            turns_until_opponent_fast_move_registers = MOVES[defender.fast_move].turns - ((self.turn - self.last_charged_move_turn) % MOVES[defender.fast_move].turns)   
 
-        # if you have enough energy for charged move that will ko and opponent has no shields, throw it immediately
-        if defender.shields == 0 and self.get_charged_move_damage(attacker, defender, 1) >= defender.hp:
-            return 1
-        
-        if defender.shields == 0 and attacker.energy >= MOVES[attacker.charged_move_2].energy_cost and self.get_charged_move_damage(attacker, defender, 2) >= defender.hp:
-            return 2
-        
-
-        # if you can't throw another fast move before getting farmed down, or if you can't throw another fast move before opponent reaches lethal charged move, throw charged move
-        if (MOVES[attacker.fast_move].turns > MOVES[defender.fast_move].turns and attacker.hp <= -(-MOVES[attacker.fast_move].turns // MOVES[defender.fast_move].turns) * self.get_fast_move_damage(defender, attacker)) or (MOVES[attacker.fast_move].turns > MOVES[defender.fast_move].turns and ((defender.energy + ((MOVES[attacker.fast_move].turns - 1) // MOVES[defender.fast_move].turns) * MOVES[defender.fast_move].energy_gain >= MOVES[defender.charged_move_1].energy_cost and attacker.hp <= self.get_charged_move_damage(defender, attacker, 1)) or (defender.energy + ((MOVES[attacker.fast_move].turns - 1) // MOVES[defender.fast_move].turns) * MOVES[defender.fast_move].energy_gain >= MOVES[defender.charged_move_2].energy_cost and attacker.hp <= self.get_charged_move_damage(defender, attacker, 2)))):
-            if MOVES[attacker.charged_move_1].energy_cost <= attacker.energy < MOVES[attacker.charged_move_2].energy_cost:
-                return 1 
-
-            if attacker.energy >= MOVES[attacker.charged_move_2].energy_cost and self.get_charged_move_damage(attacker, defender, 2) >= self.get_charged_move_damage(attacker, defender, 1):
+            # if you have enough energy for charged move that will ko and opponent has no shields, throw it immediately
+            if defender.shields == 0 and self.get_charged_move_damage(attacker, defender, 1) >= defender.hp:
+                return 1
+            
+            if defender.shields == 0 and attacker.energy >= MOVES[attacker.charged_move_2].energy_cost and self.get_charged_move_damage(attacker, defender, 2) >= defender.hp:
                 return 2
             
-        
-        
-        # if you will die to the next fast move 
-        if attacker.hp <= self.get_fast_move_damage(defender, attacker):
-            # but can still throw a fast move before dying
-            if MOVES[attacker.fast_move].turns + 1 < turns_until_opponent_fast_move_registers:
-                # throw fast move
-                return 3
-            # if not enough energy for charged move 2, throw charged move 1
-            if attacker.energy < MOVES[attacker.charged_move_2].energy_cost:
-                return 1
-            
-            move_2_does_more_damage = self.get_charged_move_damage(attacker, defender, 2) >= self.get_charged_move_damage(attacker, defender, 1)
 
-            move_1_debuffs_opponent = MOVES[attacker.charged_move_1].opponent_attack_buff < 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0
-            move_2_debuffs_opponent = MOVES[attacker.charged_move_2].opponent_attack_buff < 0 or MOVES[attacker.charged_move_2].opponent_defense_buff < 0
+            # if you have 0 shields and but can farm down before opponent reaches charged move
+            if attacker.shields == 0:
+                energy_needed_for_opponent_to_reach_move = max(0, MOVES[defender.charged_move_1].energy_cost - defender.energy)
+                turns_needed_for_opponent_to_reach_move = turns_until_opponent_fast_move_registers + MOVES[defender.fast_move].turns * math.ceil(energy_needed_for_opponent_to_reach_move/MOVES[defender.fast_move].energy_gain)
+                turns_needed_to_farm_down_opponent = MOVES[attacker.fast_move].turns * math.ceil(defender.hp/self.get_fast_move_damage(attacker, defender))
+                if turns_needed_to_farm_down_opponent <= turns_needed_for_opponent_to_reach_move:
+                    return None
 
-            # if defender has no shields or neither move debuffs opponent
-            if defender.shields == 0 or (not move_1_debuffs_opponent and not move_2_debuffs_opponent):
-                # and charged move 2 does more damage
-                if move_2_does_more_damage:
-                    # throw charged move 2
-                    return 2
-                # else, throw charged move 1
-                return 1
             
-            
-            
-            # if you have enough energy for both charged moves (given) and both charged moves could debuff opponent
-            if move_1_debuffs_opponent and move_2_debuffs_opponent:
-                # if charged move 2 does more damage and has a higher debuff chance, throw charged move 2
-                if move_2_does_more_damage and MOVES[attacker.charged_move_2].buff_probability >= MOVES[attacker.charged_move_1].buff_probability:
+
+            # if you can't throw another fast move before getting farmed down, or if you can't throw another fast move before opponent reaches lethal charged move, throw charged move
+            if (MOVES[attacker.fast_move].turns > MOVES[defender.fast_move].turns and attacker.hp <= math.ceil(MOVES[attacker.fast_move].turns / MOVES[defender.fast_move].turns) * self.get_fast_move_damage(defender, attacker)) or (MOVES[attacker.fast_move].turns > MOVES[defender.fast_move].turns and ((defender.energy + ((MOVES[attacker.fast_move].turns - 1) // MOVES[defender.fast_move].turns) * MOVES[defender.fast_move].energy_gain >= MOVES[defender.charged_move_1].energy_cost and attacker.hp <= self.get_charged_move_damage(defender, attacker, 1)) or (defender.energy + ((MOVES[attacker.fast_move].turns - 1) // MOVES[defender.fast_move].turns) * MOVES[defender.fast_move].energy_gain >= MOVES[defender.charged_move_2].energy_cost and attacker.hp <= self.get_charged_move_damage(defender, attacker, 2)))):
+                if MOVES[attacker.charged_move_1].energy_cost <= attacker.energy < MOVES[attacker.charged_move_2].energy_cost:
+                    return 1 
+
+                if attacker.energy >= MOVES[attacker.charged_move_2].energy_cost and self.get_charged_move_damage(attacker, defender, 2) >= self.get_charged_move_damage(attacker, defender, 1):
                     return 2
                 
-                # if charged move 1 does more damage and has a higher debuff chance, throw charged move 1
-                if not move_2_does_more_damage and MOVES[attacker.charged_move_2].buff_probability <= MOVES[attacker.charged_move_1].buff_probability:
+            
+            
+            # if you will die to the next fast move 
+            if attacker.hp <= self.get_fast_move_damage(defender, attacker):
+                # but can still throw a fast move before dying
+                if MOVES[attacker.fast_move].turns + 1 < turns_until_opponent_fast_move_registers:
+                    # throw fast move
+                    return None
+                # if not enough energy for charged move 2, throw charged move 1
+                if attacker.energy < MOVES[attacker.charged_move_2].energy_cost:
                     return 1
                 
-                # if a debuff is guaranteed, but will do less damage
-                if MOVES[attacker.charged_move_1].buff_probability == 1.0 or MOVES[attacker.charged_move_2].buff_probability == 1.0:
-                    # bait the debuff move 75% of the time
-                    if random.random() < 0.75:
-                        # if move 1 is the guaranteed debuff move, throw it as a bait move
-                        if MOVES[attacker.charged_move_1].buff_probability == 1.0:
-                            return 1
-                        # otherwise move 2 must be the guaranteed debuff move, throw it as a bait move
+                move_2_does_more_damage = self.get_charged_move_damage(attacker, defender, 2) >= self.get_charged_move_damage(attacker, defender, 1)
+
+                move_1_debuffs_opponent = MOVES[attacker.charged_move_1].opponent_attack_buff < 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0
+                move_2_debuffs_opponent = MOVES[attacker.charged_move_2].opponent_attack_buff < 0 or MOVES[attacker.charged_move_2].opponent_defense_buff < 0
+
+                # if defender has no shields or neither move debuffs opponent
+                if defender.shields == 0 or (not move_1_debuffs_opponent and not move_2_debuffs_opponent):
+                    # and charged move 2 does more damage
+                    if move_2_does_more_damage:
+                        # throw charged move 2
+                        return 2
+                    # else, throw charged move 1
+                    return 1
+                
+                
+                
+                # if you have enough energy for both charged moves (given) and both charged moves could debuff opponent
+                if move_1_debuffs_opponent and move_2_debuffs_opponent:
+                    # if charged move 2 does more damage and has a higher debuff chance, throw charged move 2
+                    if move_2_does_more_damage and MOVES[attacker.charged_move_2].buff_probability >= MOVES[attacker.charged_move_1].buff_probability:
                         return 2
                     
-                    # throw the harder hitting move 25% of the time
-                    # if move 1 is the guaranteed debuff move, move 2 must be harder hitting move
-                    if MOVES[attacker.charged_move_1].buff_probability == 1.0:
-                        return 2
-                    # and vice versa
-                    return 1
-                    
-                # if debuff is not guaranteed, just throw the harder hitting move
-                if move_2_does_more_damage:
-                    return 2
-                return 1
-            
-
-            # if only move 1 is a debuff move
-            if move_1_debuffs_opponent and not move_2_debuffs_opponent:
-                # if move 1 also does more damage, throw move 1
-                if not move_2_does_more_damage:
-                    return 1
-                
-                # if move 1 does less damage but is guaranteed to debuff, bait 75% of the time
-                if MOVES[attacker.charged_move_1].buff_probability == 1.0:
-                    if random.random() < 0.75:
+                    # if charged move 1 does more damage and has a higher debuff chance, throw charged move 1
+                    if not move_2_does_more_damage and MOVES[attacker.charged_move_2].buff_probability <= MOVES[attacker.charged_move_1].buff_probability:
                         return 1
-                    return 2
-                
-                # if move 1 debuff is not guaranteed and also does less damage, always throw move 2
-                return 2
-            
-            # if only move 2 is a debuff move
-            if move_2_debuffs_opponent and not move_1_debuffs_opponent:
-                # if move 2 also does more damage, throw move 1
-                if move_2_does_more_damage:
-                    return 2
-                
-                # if move 2 does less damage but is guaranteed to debuff, bait 75% of the time
-                if MOVES[attacker.charged_move_2].buff_probability == 1.0:
-                    if random.random() < 0.75:
+                    
+                    # if a debuff is guaranteed, but will do less damage
+                    if MOVES[attacker.charged_move_1].buff_probability == 1.0 or MOVES[attacker.charged_move_2].buff_probability == 1.0:
+                        # bait the debuff move 75% of the time
+                        if random.random() < 0.75:
+                            # if move 1 is the guaranteed debuff move, throw it as a bait move
+                            if MOVES[attacker.charged_move_1].buff_probability == 1.0:
+                                return 1
+                            # otherwise move 2 must be the guaranteed debuff move, throw it as a bait move
+                            return 2
+                        
+                        # throw the harder hitting move 25% of the time
+                        # if move 1 is the guaranteed debuff move, move 2 must be harder hitting move
+                        if MOVES[attacker.charged_move_1].buff_probability == 1.0:
+                            return 2
+                        # and vice versa
+                        return 1
+                        
+                    # if debuff is not guaranteed, just throw the harder hitting move
+                    if move_2_does_more_damage:
                         return 2
                     return 1
                 
-                # if move 2 debuff is not guaranteed and also does less damage, always throw move 1
-                return 1
 
-        
-        # TODO: optimal move timing
+                # if only move 1 is a debuff move
+                if move_1_debuffs_opponent and not move_2_debuffs_opponent:
+                    # if move 1 also does more damage, throw move 1
+                    if not move_2_does_more_damage:
+                        return 1
+                    
+                    # if move 1 does less damage but is guaranteed to debuff, bait 75% of the time
+                    if MOVES[attacker.charged_move_1].buff_probability == 1.0:
+                        if random.random() < 0.75:
+                            return 1
+                        return 2
+                    
+                    # if move 1 debuff is not guaranteed and also does less damage, always throw move 2
+                    return 2
+                
+                # if only move 2 is a debuff move
+                if move_2_debuffs_opponent and not move_1_debuffs_opponent:
+                    # if move 2 also does more damage, throw move 1
+                    if move_2_does_more_damage:
+                        return 2
+                    
+                    # if move 2 does less damage but is guaranteed to debuff, bait 75% of the time
+                    if MOVES[attacker.charged_move_2].buff_probability == 1.0:
+                        if random.random() < 0.75:
+                            return 2
+                        return 1
+                    
+                    # if move 2 debuff is not guaranteed and also does less damage, always throw move 1
+                    return 1
 
+            
+            # optimal move timing - charged move initiated on the previous turn!!!
+            if self.turn - self.last_charged_move_turn - 1 in OPTIMAL_MOVE_TIMING[(MOVES[attacker.fast_move].turns, MOVES[defender.fast_move].turns)]:
+                move_1_dpe = self.get_charged_move_damage(attacker, defender, 1)/MOVES[attacker.charged_move_1].energy_cost
+                move_2_dpe = self.get_charged_move_damage(attacker, defender, 2)/MOVES[attacker.charged_move_2].energy_cost
+
+                # first determine if you only will be able to reach 1 more charged move
+                if attacker.shields == 0 and defender.shields == 0 and self.get_charged_move_damage(attacker, defender, 2) > self.get_charged_move_damage(attacker, defender, 1):
+                    turns_until_you_get_farmed_down = MOVES[defender.fast_move].turns * math.ceil(attacker.hp / self.get_fast_move_damage(defender, attacker))
+                    
+                    fast_moves_until_opponent_reaches_charged_move_1 = 1 + math.ceil(max(0, MOVES[defender.charged_move_1].energy_cost - (defender.energy + MOVES[defender.fast_move].energy_gain))/MOVES[defender.fast_move].energy_gain)
+                    fast_moves_until_opponent_reaches_charged_move_2 = 1 + math.ceil(max(0, MOVES[defender.charged_move_2].energy_cost - (defender.energy + MOVES[defender.fast_move].energy_gain))/MOVES[defender.fast_move].energy_gain)
+                    
+                    hp_after_charged_move_1 = min(0, attacker.hp - fast_moves_until_opponent_reaches_charged_move_1 * self.get_fast_move_damage(defender, attacker) - self.get_charged_move_damage(defender, attacker, 1))
+                    hp_after_charged_move_2 = min(0, attacker.hp - fast_moves_until_opponent_reaches_charged_move_2 * self.get_fast_move_damage(defender, attacker) - self.get_charged_move_damage(defender, attacker, 2))
+
+                    fast_moves_until_ko_after_charged_move_1 = math.ceil(hp_after_charged_move_1 / self.get_fast_move_damage(defender, attacker))
+                    fast_moves_until_ko_after_charged_move_2 = math.ceil(hp_after_charged_move_2 / self.get_fast_move_damage(defender, attacker))
+
+                    fast_moves_until_ko = min(fast_moves_until_opponent_reaches_charged_move_1 + fast_moves_until_ko_after_charged_move_1, fast_moves_until_opponent_reaches_charged_move_2 + fast_moves_until_ko_after_charged_move_2)
+
+                    turns_until_ko = min(turns_until_you_get_farmed_down, fast_moves_until_ko * MOVES[defender.fast_move].turns)
+
+                    max_energy = min(100, attacker.energy + (turns_until_ko // MOVES[attacker.fast_move].turns) * MOVES[attacker.fast_move].energy_gain)
+
+                    if MOVES[attacker.charged_move_2].energy_cost < max_energy < 2 * MOVES[attacker.charged_move_1].energy_cost:
+                        if attacker.energy >= MOVES[attacker.charged_move_2].energy_cost:
+                            return 2
+                        return None
+
+                # if move 1 has higher DPE or will still do a lot, throw move 1
+                if move_1_dpe >= move_2_dpe or self.get_charged_move_damage(attacker, defender, 1) > defender.starting_hp :
+                    # if move 1 is self debuffing, try to double up
+                    if (MOVES[attacker.charged_move_1].user_attack_buff < 0 or MOVES[attacker.charged_move_1].user_defense_buff < 0) and attacker.energy < min(100, 2 * MOVES[attacker.charged_move_1].energy_cost):
+                        return None
+                    if (MOVES[attacker.charged_move_1].user_attack_buff >= 0 and MOVES[attacker.charged_move_1].user_defense_buff >= 0) or (MOVES[attacker.charged_move_1].user_attack_buff < 0 or (MOVES[attacker.charged_move_1].user_defense_buff < 0) and attacker.energy >= min(100, 2 * MOVES[attacker.charged_move_1].energy_cost)):
+                        return 1
+                
+                # if you have 2 shields and attack 1 has guaranteed attack buff or opponent defense debuff, throw it right away
+                if attacker.shields == 2 and (MOVES[attacker.charged_move_1].user_attack_buff > 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1.0 and move_2_dpe < 3 * move_1_dpe:
+                    return 1
+                
+
+                # if you have enough energy for move 2
+                if attacker.energy >= MOVES[attacker.charged_move_2].energy_cost:
+                    move_2_vs_1_energy_ratio = MOVES[attacker.charged_move_2].energy_cost/MOVES[attacker.charged_move_1].energy_cost
+
+                    # if opponent has no shields
+                    # by definition move 2 is more efficient so throw move 2
+                    if defender.shields == 0:
+                        return 2
+                    
+                    if move_2_dpe > 2 * move_1_dpe and (MOVES[attacker.charged_move_1].user_attack_buff > 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                        return 2
+                    
+                    # if opponent has 1 shield
+                    if defender.shields == 1:
+                        # if move 2 is really expensive, most likely to bait
+                        if move_2_vs_1_energy_ratio > 2:
+                            # if move 1 has a guaranteed attack buff or opponent defense drop, more likely to bait
+                            if (MOVES[attacker.charged_move_1].user_attack_buff > 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.8:
+                                    return 1
+                                return 2
+                            # if move 2 has a guaranteed attack buff or opponent defense drop, very unlikely to bait
+                            if (MOVES[attacker.charged_move_2].user_attack_buff > 0 or MOVES[attacker.charged_move_2].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.2:
+                                    return 1
+                                return 2
+                            # otherwise, still unlikely to bait
+                            if random.random() < 0.4:
+                                return 1
+                            return 2
+
+
+                        # if move 2 is slightly more expensive, less likely to bait
+                        if move_2_vs_1_energy_ratio > 1.5:
+                            # if move 1 has a guaranteed attack buff or opponent defense drop, more likely to bait
+                            if (MOVES[attacker.charged_move_1].user_attack_buff > 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.6:
+                                    return 1
+                                return 2
+                            # if move 2 has a guaranteed attack buff or opponent defense drop, very unlikely to bait
+                            if (MOVES[attacker.charged_move_2].user_attack_buff > 0 or MOVES[attacker.charged_move_2].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.1:
+                                    return 1
+                                return 2
+                            # otherwise, still unlikely to bait
+                            if random.random() < 0.2:
+                                return 1
+                            return 2
+
+                        # if move 2 is barely more expensive, unlikely to bait
+                        if move_2_vs_1_energy_ratio > 1:
+                            # if move 1 has a guaranteed attack buff or opponent defense drop, more likely to bait
+                            if (MOVES[attacker.charged_move_1].user_attack_buff > 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.5:
+                                    return 1
+                                return 2
+                            # if move 2 has a guaranteed attack buff or opponent defense drop, don't bait
+                            if (MOVES[attacker.charged_move_2].user_attack_buff > 0 or MOVES[attacker.charged_move_2].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                return 2
+                            # otherwise, still unlikely to bait
+                            if random.random() < 0.1:
+                                return 1
+                            return 2
+                        
+                        # if move 2 has the same energy cost and has higher DPE
+                        if move_2_vs_1_energy_ratio == 1:
+                            # if move 1 has a guaranteed attack buff or opponent defense drop, more likely to bait
+                            if (MOVES[attacker.charged_move_1].user_attack_buff > 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.4:
+                                    return 1
+    
+                            # if move 1 does not have a guaranteed attack buff or opponent defense drop, never bait
+                            return 2
+                        
+                    # if opponent has 2 shields
+                    if defender.shields == 2:
+                        # if move 2 is really expensive, most likely to bait
+                        if move_2_vs_1_energy_ratio > 2:
+                            # if move 1 has a guaranteed attack buff or opponent defense drop, more likely to bait
+                            if (MOVES[attacker.charged_move_1].user_attack_buff > 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.9:
+                                    return 1
+                                return 2
+                            # if move 2 has a guaranteed attack buff or opponent defense drop, very unlikely to bait
+                            if (MOVES[attacker.charged_move_2].user_attack_buff > 0 or MOVES[attacker.charged_move_2].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.3:
+                                    return 1
+                                return 2
+                            # otherwise, maybe bait
+                            if random.random() < 0.5:
+                                return 1
+                            return 2
+
+
+                        # if move 2 is slightly more expensive, less likely to bait
+                        if move_2_vs_1_energy_ratio > 1.5:
+                            # if move 1 has a guaranteed attack buff or opponent defense drop, more likely to bait
+                            if (MOVES[attacker.charged_move_1].user_attack_buff > 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.8:
+                                    return 1
+                                return 2
+                            # if move 2 has a guaranteed attack buff or opponent defense drop, very unlikely to bait
+                            if (MOVES[attacker.charged_move_2].user_attack_buff > 0 or MOVES[attacker.charged_move_2].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.2:
+                                    return 1
+                                return 2
+                            # otherwise, still unlikely to bait
+                            if random.random() < 0.4:
+                                return 1
+                            return 2
+
+                        # if move 2 is barely more expensive, unlikely to bait
+                        if move_2_vs_1_energy_ratio > 1:
+                            # if move 1 has a guaranteed attack buff or opponent defense drop, more likely to bait
+                            if (MOVES[attacker.charged_move_1].user_attack_buff > 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.6:
+                                    return 1
+                                return 2
+                            # if move 2 has a guaranteed attack buff or opponent defense drop, very unlikely to bait
+                            if (MOVES[attacker.charged_move_2].user_attack_buff > 0 or MOVES[attacker.charged_move_2].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.1:
+                                    return 1
+                                return 2
+                            # otherwise, still unlikely to bait
+                            if random.random() < 0.2:
+                                return 1
+                            return 2
+                        
+                        # if move 2 has the same energy cost and has higher DPE
+                        if move_2_vs_1_energy_ratio == 1:
+                            # if move 1 has a guaranteed attack buff or opponent defense drop, more likely to bait
+                            if (MOVES[attacker.charged_move_1].user_attack_buff > 0 or MOVES[attacker.charged_move_1].opponent_defense_buff < 0) and MOVES[attacker.charged_move_1].buff_probability == 1:
+                                if random.random() < 0.5:
+                                    return 1
+    
+                            # if move 1 does not have a guaranteed attack buff or opponent defense drop, never bait
+                            return 2
+
+
+
+
+            # otherwise, don't throw a charged move
+            return None
 
         
 
@@ -340,11 +560,10 @@ class Battle:
         # calculate how many more turns you will survive if you dont shield
         hp_remaining = defender.hp - self.get_charged_move_damage(attacker, defender, charged_move_thrown)
         
-        turns_alive = min(0, hp_remaining) // MOVES[attacker.fast_move].damage * MOVES[attacker.fast_move].turns
-
+        turns_alive = max(0, hp_remaining) // self.get_fast_move_damage(attacker, defender) * MOVES[attacker.fast_move].turns
     
         # if you have 2 shields and will survive > 20 turns or 1 shield and will survive > 10 turns, dont shield
-        if (defender.shields == 2 and turns_alive > 20) or (defender.shields == 1 and turns_alive > 10):
+        if (defender.shields == 2 and turns_alive > 20) or (defender.shields == 1 and turns_alive > 20):
             return False
         
         # otherwise shield
@@ -360,6 +579,10 @@ class Battle:
         attacker_action = self.action(self.attacker, self.defender)
         defender_action = self.action(self.defender, self.attacker)
 
+        # print(f'Turn {self.turn}')
+        # print(attacker_action)
+        # print(defender_action)
+
 
         
 
@@ -367,10 +590,10 @@ class Battle:
         if attacker_action in {1,2} and defender_action in {1,2}:
             if attacker.starting_attack > defender.starting_attack:
                 self.throw_charged_move(attacker, defender, self.shield_decision(attacker, defender, attacker_action), attacker_action)
-
+                
                 if defender.hp > 0:
                     self.throw_charged_move(defender, attacker, self.shield_decision(defender, attacker, defender_action), defender_action)
-
+                
             elif attacker.starting_attack < defender.starting_attack:
                 self.throw_charged_move(defender, attacker, self.shield_decision(defender, attacker, defender_action), defender_action)
                 
@@ -390,37 +613,31 @@ class Battle:
                     if attacker.hp > 0:
                         self.throw_charged_move(attacker, defender, self.shield_decision(attacker, defender, attacker_action), attacker_action)
 
+            print(self.attacker.name, self.attacker.action, '    ', self.defender.name, self.defender.action)
             return 
 
         
         if attacker_action == 3:
             self.throw_fast_move(attacker, defender)
-
-            # no DRE
-            if defender_action in {1,2} and defender.hp <= 0:
-                return
         
         if defender_action == 3:
             self.throw_fast_move(defender, attacker)
-
-            # no DRE
-            if attacker_action in {1,2} and attacker.hp <= 0:
-                return 
-
         
 
-        if attacker_action in {1,2}: 
+        if attacker_action in {1,2} and attacker.hp > 0: 
             self.throw_charged_move(attacker, defender, self.shield_decision(attacker, defender, attacker_action), attacker_action)
 
-            if defender.hp > 0:
+            # apply opponent fast move damage that is in progress when user throws charged move
+            if defender.hp > 0 and defender_action != 3:
                 self.throw_fast_move(defender, attacker)
 
 
 
-        if defender_action in {1,2}:
+        if defender_action in {1,2} and defender.hp > 0:
             self.throw_charged_move(defender, attacker, self.shield_decision(defender, attacker, defender_action), defender_action)
 
-            if attacker.hp > 0:
+            # apply user fast move damage that is in progress when opponent throws charged move
+            if attacker.hp > 0 and defender_action != 3:
                 self.throw_fast_move(attacker, defender)
 
 
@@ -436,7 +653,7 @@ class Battle:
     def simulate(self):
         while self.attacker.hp > 0 and self.defender.hp > 0:
             if self.turn > 400: 
-                print("Battle timed out!")
+                # print("Battle timed out!")
                 break
             self.step()
 
@@ -449,11 +666,11 @@ if __name__ == '__main__':
     POKEMON = {i: Pokemon(i, POKEMON_DATA[i]) for i in POKEMON_DATA}
     MOVES = {i: Move(i, MOVE_DATA[i]) for i in MOVE_DATA}
 
-    attacker = POKEMON['marowak']
-    defender = POKEMON['furret']
+    attacker = POKEMON['scizor']
+    defender = POKEMON['azumarill']
 
-    attacker_shields = 2
-    defender_shields = 2
+    attacker_shields = 1
+    defender_shields = 1
 
     battle = Battle(attacker, defender, attacker_shields, defender_shields)
     battle.simulate()
